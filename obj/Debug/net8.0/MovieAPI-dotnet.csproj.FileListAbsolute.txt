@@ -135,3 +135,4 @@ C:\Project\movie-api\MovieAPI-dotnet\MovieAPI-dotnet\bin\Debug\net8.0\runtimes\w
 C:\Project\movie-api\MovieAPI-dotnet\MovieAPI-dotnet\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 C:\Project\movie-api\MovieAPI-dotnet\MovieAPI-dotnet\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Project\movie-api\MovieAPI-dotnet\MovieAPI-dotnet\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+C:\Project\movie-api\MovieAPI-dotnet\MovieAPI-dotnet\obj\Debug\net8.0\MovieAPI-dotnet.sourcelink.json

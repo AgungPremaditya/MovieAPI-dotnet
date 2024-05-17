@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MovieAPI_dotnet.Data;
 using MovieAPI_dotnet.Dtos;
+using MovieAPI_dotnet.Dtos.Requests.Movies;
 using MovieAPI_dotnet.Dtos.Responses.Movies;
 using MovieAPI_dotnet.Helpers;
 using MovieAPI_dotnet.Models;
@@ -77,6 +78,89 @@ namespace MovieAPI_dotnet.Controllers
             };
 
             return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] MovieCreateRequestDto createDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+
+            var movie = new Movie
+            {
+                Title = createDto.Title,
+                Description = createDto.Description,
+            };
+
+            _context.Movies.Add(movie);
+            await _context.SaveChangesAsync();
+
+            return Created();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] MovieCreateRequestDto updateDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+
+            var movie = await _context.Movies.FindAsync(id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            movie.Title = updateDto.Title;
+            movie.Description = updateDto.Description;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(movie);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var movie = await _context.Movies.FindAsync(id);
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            _context.Movies.Remove(movie);
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpDelete("bulk-delete")]
+        public async Task<IActionResult> BulkDelete([FromBody] MoviesBulkDeleteRequestDto bulkDeleteDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+
+            var moviesToDelete = await _context.Movies
+                .Where(m => bulkDeleteDto.Ids.Contains(m.Id))
+                .ToListAsync();
+
+            if (moviesToDelete == null || moviesToDelete.Count() == 0)
+            {
+                return NotFound();
+            }
+
+            _context.Movies.RemoveRange(moviesToDelete);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }
