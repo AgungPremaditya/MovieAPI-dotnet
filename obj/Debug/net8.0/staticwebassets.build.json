@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "3WHTzNG6e/zXs8MT47uzmFt4YQHKXSxIbzoZySTEJSQ=",
+  "Source": "MovieAPI-dotnet",
+  "BasePath": "_content/MovieAPI-dotnet",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

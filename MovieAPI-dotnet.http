@@ -1,0 +1,6 @@
+@MovieAPI_dotnet_HostAddress = http://localhost:5177
+
+GET {{MovieAPI_dotnet_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
