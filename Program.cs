@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MovieAPI_dotnet.Data;
+using MovieAPI_dotnet.Repositories.Movies;
 using MovieAPI_dotnet.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,7 @@ builder.Services.AddHostedService<ScheduledTaskService>();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddHttpClient<IExternalApiService, ExternalApiService>();
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

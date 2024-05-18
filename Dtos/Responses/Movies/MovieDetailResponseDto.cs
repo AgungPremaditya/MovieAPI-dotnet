@@ -12,6 +12,7 @@
             public int Id { get; set; }
             public required string Title { get; set; }
             public required string Description { get; set; }
+            public required DateTime AiringDate { get; set; }
             public List<UserDto>? Users { get; set;}
         }
     }

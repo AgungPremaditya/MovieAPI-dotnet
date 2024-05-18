@@ -10,5 +10,8 @@ namespace MovieAPI_dotnet.Dtos.Requests.Movies
 
         [Required]
         public required string Description { get; set; }
+
+        [Required]
+        public required DateTime airingDate { get; set; }
     }
 }

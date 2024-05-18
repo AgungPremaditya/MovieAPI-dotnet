@@ -4,9 +4,8 @@ using MovieAPI_dotnet.Data;
 using MovieAPI_dotnet.Dtos;
 using MovieAPI_dotnet.Dtos.Requests.Movies;
 using MovieAPI_dotnet.Dtos.Responses.Movies;
-using MovieAPI_dotnet.Helpers;
 using MovieAPI_dotnet.Models;
-using System.Text.Json;
+using MovieAPI_dotnet.Repositories.Movies;
 
 namespace MovieAPI_dotnet.Controllers
 {
@@ -14,39 +13,19 @@ namespace MovieAPI_dotnet.Controllers
     [ApiController]
     public class MovieController : Controller
     {
+        private readonly IMovieRepository _repository;
         private readonly AppDbContext _context;
 
-        public MovieController(AppDbContext context)
+        public MovieController(IMovieRepository repository, AppDbContext context)
         {
+            _repository = repository;
             _context = context;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Movie>>> GetAll([FromQuery] IndexDto index) 
         {
-            var query = _context.Movies.AsQueryable();
-
-            if (!string.IsNullOrEmpty(index.search))
-            {
-                query = query.Where(movie => movie.Title.Contains(index.search));
-            }
-
-            var paginatedList = await PaginatedList<Movie>.CreateAsync(query.AsNoTracking(), index.pageNumber, index.pageSize);
-
-            var response = new PaginatedResponse<Movie>
-            {
-                Meta = new PaginationMeta 
-                {
-                    PageIndex = paginatedList.CurrentPage,
-                    TotalPages = paginatedList.TotalPages,
-                    PageSize = paginatedList.PageSize,
-                    TotalCount = paginatedList.TotalCount,
-                    HasPreviousPage = paginatedList.HasPrevious,
-                    HasNextPage = paginatedList.HasNext,
-                },
-                Data = paginatedList.ToList()
-            };
-
+            var response = await _repository.GetMoviesAsync(index);
 
             return Ok(response);
         }
@@ -54,11 +33,7 @@ namespace MovieAPI_dotnet.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Movie>> GetDetail(int id) 
         {
-            var movie = await _context.Movies
-                .Include(m => m.UserMovies)
-                .ThenInclude(um => um.User)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(Movie => Movie.Id == id);
+            var movie = await _repository.GetMovieById(id);
 
             if (movie == null)
             {   
@@ -70,6 +45,7 @@ namespace MovieAPI_dotnet.Controllers
                 Id = movie.Id,
                 Title = movie.Title,
                 Description = movie.Description,
+                AiringDate = movie.AiringDate,
                 Users = movie.UserMovies.Select(um => new MovieDetailResponseDto.UserDto
                 {
                     Id = um.User?.Id,
@@ -92,10 +68,10 @@ namespace MovieAPI_dotnet.Controllers
             {
                 Title = createDto.Title,
                 Description = createDto.Description,
+                AiringDate = createDto.airingDate,
             };
 
-            _context.Movies.Add(movie);
-            await _context.SaveChangesAsync();
+            await _repository.AddMovie(movie);
 
             return Created();
         }
@@ -108,7 +84,7 @@ namespace MovieAPI_dotnet.Controllers
                 return UnprocessableEntity(ModelState);
             }
 
-            var movie = await _context.Movies.FindAsync(id);
+            var movie = await _repository.GetMovieById(id);
 
             if (movie == null)
             {
@@ -117,8 +93,9 @@ namespace MovieAPI_dotnet.Controllers
 
             movie.Title = updateDto.Title;
             movie.Description = updateDto.Description;
+            movie.AiringDate = updateDto.airingDate;
 
-            await _context.SaveChangesAsync();
+            await _repository.UpdateMovie(movie);
 
             return Ok(movie);
         }
@@ -126,16 +103,7 @@ namespace MovieAPI_dotnet.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var movie = await _context.Movies.FindAsync(id);
-
-            if (movie == null)
-            {
-                return NotFound();
-            }
-
-            _context.Movies.Remove(movie);
-
-            await _context.SaveChangesAsync();
+            await _repository.DeleteMovie(id);
 
             return NoContent();
         }
@@ -148,17 +116,7 @@ namespace MovieAPI_dotnet.Controllers
                 return UnprocessableEntity(ModelState);
             }
 
-            var moviesToDelete = await _context.Movies
-                .Where(m => bulkDeleteDto.Ids.Contains(m.Id))
-                .ToListAsync();
-
-            if (moviesToDelete == null || moviesToDelete.Count() == 0)
-            {
-                return NotFound();
-            }
-
-            _context.Movies.RemoveRange(moviesToDelete);
-            await _context.SaveChangesAsync();
+            await _repository.DeleteMovies(bulkDeleteDto.Ids);
 
             return NoContent();
         }
