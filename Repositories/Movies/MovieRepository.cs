@@ -10,7 +10,8 @@ namespace MovieAPI_dotnet.Repositories.Movies
 {
     public interface IMovieRepository
     {
-        Task<PaginatedResponse<Movie>> GetMoviesAsync(IndexDto index);
+        Task<PaginatedResponse<Movie>> GetPaginatedMoviesAsync(IndexDto index);
+        Task<List<Movie>> GetMoviesAsync();
         Task<Movie> GetMovieById(int id);
         Task AddMovie(Movie movie);
         Task UpdateMovie(Movie movie);
@@ -26,7 +27,7 @@ namespace MovieAPI_dotnet.Repositories.Movies
             _context = context;
         }
 
-        public async Task<PaginatedResponse<Movie>> GetMoviesAsync(IndexDto index)
+        public async Task<PaginatedResponse<Movie>> GetPaginatedMoviesAsync(IndexDto index)
         {
             var query = _context.Movies.AsQueryable();
 
@@ -52,6 +53,13 @@ namespace MovieAPI_dotnet.Repositories.Movies
             };
 
             return response;
+        }
+
+        public async Task<List<Movie>> GetMoviesAsync()
+        {
+            var raw = await _context.Movies.ToListAsync();
+
+            return raw;
         }
 
         public async Task<Movie> GetMovieById(int id)

@@ -1,4 +1,5 @@
 ﻿using Cronos;
+using MovieAPI_dotnet.Repositories.Movies;
 
 namespace MovieAPI_dotnet.Services
 {
@@ -8,11 +9,13 @@ namespace MovieAPI_dotnet.Services
         private Timer? _timer;
         private CronExpression _cronExpression;
         private DateTimeOffset? _nextRun;
+        private readonly IServiceProvider _serviceProvider;
 
-        public ScheduledTaskService(ILogger<ScheduledTaskService> logger)
+        public ScheduledTaskService(ILogger<ScheduledTaskService> logger, IServiceProvider serviceProvider)
         {
             _logger = logger;
             _cronExpression = CronExpression.Parse("@every_second");
+            _serviceProvider = serviceProvider;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -33,14 +36,23 @@ namespace MovieAPI_dotnet.Services
                 _timer = new Timer(DoWork, null, delay, TimeSpan.FromSeconds(1));
             }
         }
-        private void DoWork(object state)
+        private async void DoWork(object state)
         {
             _logger.LogInformation("Scheduled Task is running at: {time}", DateTimeOffset.Now);
 
             // Add your scheduled task logic here
-            if (DateTime.Now >= DateTime.Today.AddHours(9).AddMinutes(48))
+            using (var scope = _serviceProvider.CreateScope())
             {
-                StopAsync(new CancellationToken());
+                var movieRepo = scope.ServiceProvider.GetRequiredService<IMovieRepository>();
+                var movies = await movieRepo.GetMoviesAsync();
+
+                foreach (var movie in movies)
+                {
+                    if (DateTime.Now >= movie.AiringDate)
+                        _logger.LogInformation("Airing");
+                    else
+                        _logger.LogInformation("Not Airing");
+                }
             }
         }
 

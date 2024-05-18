@@ -25,7 +25,7 @@ namespace MovieAPI_dotnet.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Movie>>> GetAll([FromQuery] IndexDto index) 
         {
-            var response = await _repository.GetMoviesAsync(index);
+            var response = await _repository.GetPaginatedMoviesAsync(index);
 
             return Ok(response);
         }
