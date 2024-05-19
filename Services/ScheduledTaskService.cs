@@ -48,10 +48,8 @@ namespace MovieAPI_dotnet.Services
 
                 foreach (var movie in movies)
                 {
-                    if (DateTime.Now >= movie.AiringDate)
+                    if (DateTime.Now > DateTime.Now)
                         _logger.LogInformation("Airing");
-                    else
-                        _logger.LogInformation("Not Airing");
                 }
             }
         }

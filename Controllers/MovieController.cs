@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MovieAPI_dotnet.Data;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieAPI_dotnet.Dtos;
 using MovieAPI_dotnet.Dtos.Requests.Movies;
 using MovieAPI_dotnet.Dtos.Responses.Movies;
@@ -11,15 +10,14 @@ namespace MovieAPI_dotnet.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MovieController : Controller
     {
         private readonly IMovieRepository _repository;
-        private readonly AppDbContext _context;
 
-        public MovieController(IMovieRepository repository, AppDbContext context)
+        public MovieController(IMovieRepository repository)
         {
             _repository = repository;
-            _context = context;
         }
 
         [HttpGet]

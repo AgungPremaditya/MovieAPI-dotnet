@@ -274,3 +274,5 @@ C:\Users\prema\Documents\training-dotnet\MovieAPI-dotnet\obj\Debug\net8.0\refint
 C:\Users\prema\Documents\training-dotnet\MovieAPI-dotnet\obj\Debug\net8.0\MovieAPI-dotnet.pdb
 C:\Users\prema\Documents\training-dotnet\MovieAPI-dotnet\obj\Debug\net8.0\MovieAPI-dotnet.genruntimeconfig.cache
 C:\Users\prema\Documents\training-dotnet\MovieAPI-dotnet\obj\Debug\net8.0\ref\MovieAPI-dotnet.dll
+C:\Project\movie-api\MovieAPI-dotnet\MovieAPI-dotnet\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Project\movie-api\MovieAPI-dotnet\MovieAPI-dotnet\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

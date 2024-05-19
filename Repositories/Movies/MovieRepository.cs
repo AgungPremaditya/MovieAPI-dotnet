@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using MovieAPI_dotnet.Data;
 using MovieAPI_dotnet.Dtos;
 using MovieAPI_dotnet.Dtos.Responses.Movies;
@@ -12,7 +13,7 @@ namespace MovieAPI_dotnet.Repositories.Movies
     {
         Task<PaginatedResponse<Movie>> GetPaginatedMoviesAsync(IndexDto index);
         Task<List<Movie>> GetMoviesAsync();
-        Task<Movie> GetMovieById(int id);
+        Task<Movie?> GetMovieById(int id);
         Task AddMovie(Movie movie);
         Task UpdateMovie(Movie movie);
         Task DeleteMovie(int id);
@@ -62,13 +63,15 @@ namespace MovieAPI_dotnet.Repositories.Movies
             return raw;
         }
 
-        public async Task<Movie> GetMovieById(int id)
+        public async Task<Movie?> GetMovieById(int id)
         {
             var movie = await _context.Movies
                 .Include(m => m.UserMovies)
                 .ThenInclude(um => um.User)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(Movie => Movie.Id == id);
+
+            if (movie == null) return null;
 
             return movie;
         }

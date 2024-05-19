@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\prema\\Documents\\training-dotnet\\MovieAPI-dotnet\\MovieAPI-dotnet.csproj": {}
+    "C:\\Project\\movie-api\\MovieAPI-dotnet\\MovieAPI-dotnet\\MovieAPI-dotnet.csproj": {}
   },
   "projects": {
-    "C:\\Users\\prema\\Documents\\training-dotnet\\MovieAPI-dotnet\\MovieAPI-dotnet.csproj": {
+    "C:\\Project\\movie-api\\MovieAPI-dotnet\\MovieAPI-dotnet\\MovieAPI-dotnet.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\prema\\Documents\\training-dotnet\\MovieAPI-dotnet\\MovieAPI-dotnet.csproj",
+        "projectUniqueName": "C:\\Project\\movie-api\\MovieAPI-dotnet\\MovieAPI-dotnet\\MovieAPI-dotnet.csproj",
         "projectName": "MovieAPI-dotnet",
-        "projectPath": "C:\\Users\\prema\\Documents\\training-dotnet\\MovieAPI-dotnet\\MovieAPI-dotnet.csproj",
-        "packagesPath": "C:\\Users\\prema\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\prema\\Documents\\training-dotnet\\MovieAPI-dotnet\\obj\\",
+        "projectPath": "C:\\Project\\movie-api\\MovieAPI-dotnet\\MovieAPI-dotnet\\MovieAPI-dotnet.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "C:\\Project\\movie-api\\MovieAPI-dotnet\\MovieAPI-dotnet\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\prema\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -45,9 +45,17 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
             "Cronos": {
               "target": "Package",
               "version": "[0.8.4, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.5, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -87,7 +95,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
