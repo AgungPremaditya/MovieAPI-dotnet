@@ -22,7 +22,7 @@ builder.Services.AddScoped<PasswordHasher>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddHttpClient<IExternalApiService, ExternalApiService>();
-// builder.Services.AddHostedService<ScheduledTaskService>();
+builder.Services.AddHostedService<ScheduledTaskService>();
 
 builder.Services.AddControllers();
 
